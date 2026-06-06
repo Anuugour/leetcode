@@ -1,0 +1,32 @@
+class Solution:
+    def advantageCount(self, nums1: List[int], nums2: List[int]) -> List[int]:
+
+        nums1.sort()
+
+        # Store nums2 values with their original index
+        nums2_with_index = []
+        for i in range(len(nums2)):
+            nums2_with_index.append((nums2[i], i))
+
+        nums2_with_index.sort()
+
+        ans = [0] * len(nums1)
+        extra = []
+
+        j = 0
+
+        # Try to beat nums2's smallest numbers
+        for num in nums1:
+            if num > nums2_with_index[j][0]:
+                index = nums2_with_index[j][1]
+                ans[index] = num
+                j += 1
+            else:
+                extra.append(num)
+
+        # Fill remaining positions
+        for i in range(len(ans)):
+            if ans[i] == 0:
+                ans[i] = extra.pop()
+
+        return ans
