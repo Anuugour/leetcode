@@ -1,0 +1,25 @@
+class Solution:
+    def removeZeroSumSublists(self, head):
+        dummy = ListNode(0)
+        dummy.next = head
+
+        prefix = {}
+        total = 0
+        curr = dummy
+
+        # Save last node for every prefix sum
+        while curr:
+            total += curr.val
+            prefix[total] = curr
+            curr = curr.next
+
+        total = 0
+        curr = dummy
+
+        # Remove zero-sum parts
+        while curr:
+            total += curr.val
+            curr.next = prefix[total].next
+            curr = curr.next
+
+        return dummy.next
