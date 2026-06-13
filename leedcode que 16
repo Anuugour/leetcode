@@ -1,0 +1,25 @@
+from functools import cache
+
+class Solution:
+    def maxSizeSlices(self, slices: List[int]) -> int:
+        n = len(slices)
+        k = n // 3
+
+        @cache
+        def dp(i, end, count):
+           
+            if count == 0 or i > end:
+                return 0
+
+            take = slices[i] + dp(i + 2, end, count - 1)
+
+            skip = dp(i + 1, end, count)
+
+            return max(take, skip)
+
+       
+        case1 = dp(0, n - 2, k)
+
+        case2 = dp(1, n - 1, k)
+
+        return max(case1, case2)
