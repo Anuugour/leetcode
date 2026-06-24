@@ -1,0 +1,15 @@
+class Solution:
+    def getImportance(self, employees: List['Employee'], id: int) -> int:
+     
+        mp = {}
+        for e in employees:
+            mp[e.id] = e
+
+        def dfs(emp_id):
+            employee = mp[emp_id]
+            total = employee.importance
+
+            for sub_id in employee.subordinates:
+                total += dfs(sub_id)
+
+            return total
