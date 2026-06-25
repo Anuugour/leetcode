@@ -1,0 +1,30 @@
+class Solution:
+    def addOneRow(self, root, val, depth):
+
+        # If new row is to be added at root
+        if depth == 1:
+            newRoot = TreeNode(val)
+            newRoot.left = root
+            return newRoot
+
+        def dfs(node, level):
+            if not node:
+                return
+
+            # Reached parent level of required depth
+            if level == depth - 1:
+                oldLeft = node.left
+                oldRight = node.right
+
+                node.left = TreeNode(val)
+                node.right = TreeNode(val)
+
+                node.left.left = oldLeft
+                node.right.right = oldRight
+                return
+
+            dfs(node.left, level + 1)
+            dfs(node.right, level + 1)
+
+        dfs(root, 1)
+        return root
