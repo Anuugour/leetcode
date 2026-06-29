@@ -1,0 +1,39 @@
+class Solution:
+    def nearestPalindromic(self, n: str) -> str:
+        num = int(n)
+        length = len(n)
+
+        if num <= 10:
+            return str(num - 1)
+        if num == 11:
+            return "9"
+        left = int(n[:(length + 1) // 2])
+
+        candidates = set()
+
+        for x in [left - 1, left, left + 1]:
+            s = str(x)
+
+            if length % 2 == 0:
+                p = s + s[::-1]
+            else:
+                p = s + s[:-1][::-1]
+
+            candidates.add(int(p))
+
+        candidates.add(10 ** (length - 1) - 1)
+        candidates.add(10 ** length + 1)
+
+        candidates.discard(num)
+
+        ans = -1
+        diff = float('inf')
+
+        for p in candidates:
+            d = abs(p - num)
+
+            if d < diff or (d == diff and p < ans):
+                diff = d
+                ans = p
+
+        return str(ans)
