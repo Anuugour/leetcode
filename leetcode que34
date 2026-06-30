@@ -1,0 +1,13 @@
+class Solution:
+    def kConcatenationMaxSum(self, arr: List[int], k: int) -> int:
+
+        if max(arr)<= 0 : return 0     
+        sm, ct, mx,  = sum(arr), 0, 0   
+                                      
+        if k > 1: arr.extend(arr)     
+                                     
+        for n in arr:                  
+            ct = max(ct + n, 0)        
+            mx = max(mx, ct)           
+                                      
+        return (mx + (k-2) * sm * (k > 1) * (sm > 0)) % 1000000007
