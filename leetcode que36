@@ -1,0 +1,30 @@
+class Solution:
+    def insertRow(self, node, val, depth, level):
+        if not node:
+            return None
+
+        if level == depth - 1:
+            oldLeft = node.left
+            oldRight = node.right
+
+            node.left = TreeNode(val)
+            node.right = TreeNode(val)
+
+            node.left.left = oldLeft
+            node.right.right = oldRight
+
+            return node
+
+        self.insertRow(node.left, val, depth, level + 1)
+        self.insertRow(node.right, val, depth, level + 1)
+
+        return node
+
+    def addOneRow(self, root, val, depth):
+
+        if depth == 1:
+            newRoot = TreeNode(val)
+            newRoot.left = root
+            return newRoot
+
+        return self.insertRow(root, val, depth, 1)
