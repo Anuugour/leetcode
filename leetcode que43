@@ -1,0 +1,30 @@
+from functools import lru_cache
+
+class Solution:
+    def countPalindromicSubsequences(self, s: str) -> int:
+        MOD = 1000000007
+
+        @lru_cache(None)
+        def dp(left, right):
+
+            if left > right:
+                return 0
+
+            ans = 0
+
+            for ch in "abcd":
+
+                first = s.find(ch, left, right)
+                last = s.rfind(ch, left, right)
+
+                if first == -1:
+                    continue
+
+                if first == last:
+                    ans += 1
+                else:
+                    ans += 2 + dp(first + 1, last)
+
+            return ans % MOD
+
+        return dp(0, len(s))
