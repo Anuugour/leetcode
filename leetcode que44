@@ -1,0 +1,13 @@
+from collections import defaultdict
+import random
+
+class Solution:
+
+    def __init__(self, nums):
+        self.data = defaultdict(list)
+
+        for i in range(len(nums)):
+            self.data[nums[i]].append(i)
+
+    def pick(self, target):
+        return random.choice(self.data[target])
