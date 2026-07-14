@@ -1,0 +1,44 @@
+from collections import defaultdict, deque
+
+class Solution:
+    def calcEquation(self, equations, values, queries):
+
+        # Create graph
+        graph = defaultdict(dict)
+
+        for i in range(len(equations)):
+            a, b = equations[i]
+            val = values[i]
+
+            graph[a][b] = val
+            graph[b][a] = 1 / val
+
+        ans = []
+
+        # Solve each query
+        for start, end in queries:
+
+            if start not in graph or end not in graph:
+                ans.append(-1.0)
+                continue
+
+            q = deque()
+            q.append((start, 1))
+            visited = set()
+
+            while q:
+                node, value = q.popleft()
+
+                if node == end:
+                    ans.append(value)
+                    break
+
+                visited.add(node)
+
+                for nxt in graph[node]:
+                    if nxt not in visited:
+                        q.append((nxt, value * graph[node][nxt]))
+            else:
+                ans.append(-1.0)
+
+        return ans
