@@ -1,0 +1,48 @@
+class Solution:
+    def solveEquation(self, equation: str) -> str:
+
+        def solve(side):
+            x = 0      # coefficient of x
+            num = 0    # constant
+            sign = 1
+            i = 0
+
+            while i < len(side):
+                if side[i] == '+':
+                    sign = 1
+                    i += 1
+                elif side[i] == '-':
+                    sign = -1
+                    i += 1
+                else:
+                    j = i
+                    while j < len(side) and side[j].isdigit():
+                        j += 1
+
+                    if j < len(side) and side[j] == 'x':
+                        if i == j:
+                            x += sign * 1      # x means 1x
+                        else:
+                            x += sign * int(side[i:j])
+                        j += 1
+                    else:
+                        num += sign * int(side[i:j])
+
+                    i = j
+
+            return x, num
+
+        left, right = equation.split("=")
+
+        lx, ln = solve(left)
+        rx, rn = solve(right)
+
+        x = lx - rx
+        num = rn - ln
+
+        if x == 0:
+            if num == 0:
+                return "Infinite solutions"
+            return "No solution"
+
+        return "x=" + str(num // x)
