@@ -1,0 +1,27 @@
+import heapq
+
+class Solution:
+    def maxEvents(self, events):
+
+        events.sort()         
+
+        heap = []
+        event = 0
+        answer = 0
+
+        last_day = max(end for start, end in events)
+
+        for day in range(1, last_day + 1):
+
+            while event < len(events) and events[event][0] == day:
+                heapq.heappush(heap, events[event][1])
+                event += 1
+
+            while heap and heap[0] < day:
+                heapq.heappop(heap)
+
+            if heap:
+                heapq.heappop(heap)
+                answer += 1
+
+        return answer
