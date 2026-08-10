@@ -1,0 +1,33 @@
+from collections import deque
+
+class TextEditor:
+
+    def __init__(self):
+        self.left = []      # characters before cursor
+        self.right = deque()  # characters after cursor
+
+    def addText(self, text):
+        self.left.extend(text)
+
+    def deleteText(self, k):
+        removed = min(k, len(self.left))
+
+        for _ in range(removed):
+            self.left.pop()
+
+        return removed
+
+    def cursorLeft(self, k):
+        for _ in range(min(k, len(self.left))):
+            self.right.appendleft(self.left.pop())
+
+        return self.getLast10()
+
+    def cursorRight(self, k):
+        for _ in range(min(k, len(self.right))):
+            self.left.append(self.right.popleft())
+
+        return self.getLast10()
+
+    def getLast10(self):
+        return ''.join(self.left[-10:])
