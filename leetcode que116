@@ -1,0 +1,36 @@
+class Solution(object):
+    def findNumberOfLIS(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        n = len(nums)
+        if n == 0: return 0
+        
+        # sequence[i] stores the length of LIS ending at index i
+        # count[i] stores the number of LIS ending at index i
+        sequence = [1 for _ in range(n)]
+        count = [1 for _ in range(n)]
+
+        for i in range(n):
+            for j in range(0, i):
+                if nums[j] < nums[i]:
+                    # Found a strictly longer subsequence
+                    if sequence[j] + 1 > sequence[i]:
+                        sequence[i] = sequence[j] + 1
+                        count[i] = count[j]
+                    
+                    # Found another subsequence of the same maximum length
+                    elif sequence[j] + 1 == sequence[i]:
+                        count[i] += count[j]
+
+        # Find the overall maximum length
+        max_len = max(sequence)
+        
+        # Sum up all counts that contribute to the LIS of max_len
+        result = 0
+        for i in range(n):
+            if sequence[i] == max_len:
+                result += count[i]
+                
+        return result
